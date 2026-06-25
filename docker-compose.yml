@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  # Сервер бэкенда (FastAPI)
+  backend:
+    build:
+      context: .
+      dockerfile: backend.Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app # Монтируем папку проекта, чтобы файл hospices.db сохранялся на вашем компьютере и данные не пропадали при перезапуске
+
+  # Сервер фронтенда (Streamlit)
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend.Dockerfile
+    ports:
+      - "8501:8501"
+    depends_on:
+      - backend # Фронтенд не запустится, пока не поднимется бэкенд
